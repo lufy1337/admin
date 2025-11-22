@@ -194,7 +194,14 @@ client.on('interactionCreate', async (interaction) => {
   try {
     switch (commandName) {
       case 'user': {
-        const username = interaction.options.getString('username', true)
+        const username = interaction.options.getString('username', true)?.trim()
+        if (!username) {
+          await interaction.reply({
+            embeds: [createEmbed('❌ Error', 'Username cannot be empty', 0xFF0000)],
+            ephemeral: true,
+          })
+          return
+        }
         const result = await keyAuth.getUserInfo(username)
 
         if (result.success && result.info) {
@@ -225,7 +232,14 @@ client.on('interactionCreate', async (interaction) => {
       }
 
       case 'ban': {
-        const username = interaction.options.getString('username', true)
+        const username = interaction.options.getString('username', true)?.trim()
+        if (!username) {
+          await interaction.reply({
+            embeds: [createEmbed('❌ Error', 'Username cannot be empty', 0xFF0000)],
+            ephemeral: true,
+          })
+          return
+        }
         const result = await keyAuth.banUser(username)
 
         await interaction.reply({
@@ -239,7 +253,14 @@ client.on('interactionCreate', async (interaction) => {
       }
 
       case 'unban': {
-        const username = interaction.options.getString('username', true)
+        const username = interaction.options.getString('username', true)?.trim()
+        if (!username) {
+          await interaction.reply({
+            embeds: [createEmbed('❌ Error', 'Username cannot be empty', 0xFF0000)],
+            ephemeral: true,
+          })
+          return
+        }
         const result = await keyAuth.unbanUser(username)
 
         await interaction.reply({
@@ -253,7 +274,14 @@ client.on('interactionCreate', async (interaction) => {
       }
 
       case 'deleteuser': {
-        const username = interaction.options.getString('username', true)
+        const username = interaction.options.getString('username', true)?.trim()
+        if (!username) {
+          await interaction.reply({
+            embeds: [createEmbed('❌ Error', 'Username cannot be empty', 0xFF0000)],
+            ephemeral: true,
+          })
+          return
+        }
         const result = await keyAuth.deleteUser(username)
 
         await interaction.reply({
@@ -267,7 +295,14 @@ client.on('interactionCreate', async (interaction) => {
       }
 
       case 'resethwid': {
-        const username = interaction.options.getString('username', true)
+        const username = interaction.options.getString('username', true)?.trim()
+        if (!username) {
+          await interaction.reply({
+            embeds: [createEmbed('❌ Error', 'Username cannot be empty', 0xFF0000)],
+            ephemeral: true,
+          })
+          return
+        }
         const result = await keyAuth.resetHWID(username)
 
         await interaction.reply({
@@ -310,8 +345,15 @@ client.on('interactionCreate', async (interaction) => {
       }
 
       case 'uselicense': {
-        const license = interaction.options.getString('license', true)
-        const username = interaction.options.getString('username', true)
+        const license = interaction.options.getString('license', true)?.trim()
+        const username = interaction.options.getString('username', true)?.trim()
+        if (!license || !username) {
+          await interaction.reply({
+            embeds: [createEmbed('❌ Error', 'License and username cannot be empty', 0xFF0000)],
+            ephemeral: true,
+          })
+          return
+        }
         const result = await keyAuth.useLicense(license, username)
 
         await interaction.reply({
@@ -325,9 +367,16 @@ client.on('interactionCreate', async (interaction) => {
       }
 
       case 'extendsub': {
-        const username = interaction.options.getString('username', true)
-        const subscription = interaction.options.getString('subscription', true)
+        const username = interaction.options.getString('username', true)?.trim()
+        const subscription = interaction.options.getString('subscription', true)?.trim()
         const days = interaction.options.getInteger('days', true)
+        if (!username || !subscription) {
+          await interaction.reply({
+            embeds: [createEmbed('❌ Error', 'Username and subscription cannot be empty', 0xFF0000)],
+            ephemeral: true,
+          })
+          return
+        }
         const result = await keyAuth.extendSubscription(username, subscription, days)
 
         await interaction.reply({
