@@ -125,7 +125,7 @@ export class KeyAuthClient {
   }
 
   async resetHWID(username: string): Promise<KeyAuthResponse> {
-    return this.makeRequest('resetuser', { username })
+    return this.makeRequest('resethwid', { username })
   }
 
   // License Management
