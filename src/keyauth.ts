@@ -55,10 +55,12 @@ export class KeyAuthClient {
       })
 
       if (response.ok) {
-        const data = await response.json() as { success?: boolean; sessionid?: string }
+        const jsonData: unknown = await response.json()
+        const data = jsonData as { success?: boolean; sessionid?: string }
         if (data.success && data.sessionid) {
-          this.sessionId = data.sessionid
-          return this.sessionId
+          const sessionId = data.sessionid
+          this.sessionId = sessionId
+          return sessionId
         }
       }
     } catch (error) {
@@ -97,7 +99,8 @@ export class KeyAuthClient {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
 
-      const data = await response.json() as KeyAuthResponse
+      const jsonData: unknown = await response.json()
+      const data = jsonData as KeyAuthResponse
       return data
     } catch (error: any) {
       throw new Error(`KeyAuth API request failed: ${error.message}`)
