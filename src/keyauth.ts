@@ -55,7 +55,7 @@ export class KeyAuthClient {
       })
 
       if (response.ok) {
-        const data = await response.json()
+        const data = await response.json() as { success?: boolean; sessionid?: string }
         if (data.success && data.sessionid) {
           this.sessionId = data.sessionid
           return this.sessionId
@@ -67,8 +67,9 @@ export class KeyAuthClient {
 
     // Fallback: generate a session ID
     const crypto = await import('crypto')
-    this.sessionId = crypto.randomUUID()
-    return this.sessionId
+    const sessionId = crypto.randomUUID()
+    this.sessionId = sessionId
+    return sessionId
   }
 
   private async makeRequest(type: string, params: Record<string, string>): Promise<KeyAuthResponse> {
@@ -96,7 +97,7 @@ export class KeyAuthClient {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
 
-      const data = await response.json()
+      const data = await response.json() as KeyAuthResponse
       return data
     } catch (error: any) {
       throw new Error(`KeyAuth API request failed: ${error.message}`)
